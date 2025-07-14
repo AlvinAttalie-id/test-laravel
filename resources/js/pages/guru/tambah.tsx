@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function TambahGuru() {
-    const { data, setData, post, processing, errors , reset} = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         nama: '',
         nip: '',
         no_hp: '',

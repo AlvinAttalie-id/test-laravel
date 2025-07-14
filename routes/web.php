@@ -4,7 +4,10 @@ use App\Http\Controllers\DashboardController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\JadwalPelajaranController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\MapelController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 
@@ -34,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [KelasController::class, 'index'])->name('kelas.index');
         Route::get('/create', [KelasController::class, 'create'])->name('kelas.create');
         Route::post('', [KelasController::class, 'store'])->name('kelas.store');
+        Route::get('/{kelas}/siswa', [KelasController::class, 'siswa'])->name('kelas.siswa');
+        Route::get('/{guru}/kelas', [GuruController::class, 'kelas'])->name('guru.kelas');
         Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
         Route::post('/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
         Route::delete('/delete/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');

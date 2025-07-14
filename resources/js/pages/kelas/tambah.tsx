@@ -46,12 +46,12 @@ export default function TambahKelas() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2 ">
                                 <label htmlFor="nama" className="text-sm font-medium">Nama</label>
-                                <Input 
-                                    id="nama" 
-                                    value={data.nama} 
-                                    onChange={(e) => setData('nama', e.target.value)} 
+                                <Input
+                                    id="nama"
+                                    value={data.nama}
+                                    onChange={(e) => setData('nama', e.target.value)}
                                     placeholder="Masukkan nama kelas"
-                                    className="w-full mt-4" 
+                                    className="w-full mt-4"
                                 />
                                 {errors.nama && <div className="text-sm text-red-500">{errors.nama}</div>}
                             </div>
@@ -64,9 +64,9 @@ export default function TambahKelas() {
                                     onChange={(e) => setData('wali_kelas_id', e.target.value)}
                                     className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 mt-4"
                                 >
-                                    <option value="">Pilih Wali Kelas</option>
+                                    <option className='text-black' value="">Pilih Wali Kelas</option>
                                     {wali.map((item) => (
-                                        <option key={item.id} value={item.id}>
+                                        <option key={item.id} value={item.id} className="text-black">
                                             {item.nama}
                                         </option>
                                     ))}

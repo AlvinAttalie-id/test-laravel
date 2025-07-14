@@ -189,25 +189,35 @@ export default function GuruPage() {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
 
     const table = useReactTable({
         data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        onPaginationChange: setPagination,
+
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
+
         state: {
             sorting,
             columnFilters,
             columnVisibility,
             rowSelection,
+            pagination, // ✅ tambahkan ini
         },
     });
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -296,10 +306,78 @@ export default function GuruPage() {
                             {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
                         </div>
                         <div className="space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => table.previousPage()}
+                                disabled={!table.getCanPreviousPage()}
+                            >
                                 Previous
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+
+                            {/* Tombol halaman windowed */}
+                            {(() => {
+                                const pageCount = table.getPageCount();
+                                const currentPage = table.getState().pagination.pageIndex;
+                                const pages = [];
+
+                                const start = Math.max(0, currentPage - 2);
+                                const end = Math.min(pageCount - 1, currentPage + 2);
+
+                                if (start > 0) {
+                                    pages.push(
+                                        <Button
+                                            key={0}
+                                            variant={currentPage === 0 ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(0)}
+                                        >
+                                            1
+                                        </Button>
+                                    );
+                                    if (start > 1) {
+                                        pages.push(<span key="start-ellipsis" className="px-2">...</span>);
+                                    }
+                                }
+
+                                for (let i = start; i <= end; i++) {
+                                    pages.push(
+                                        <Button
+                                            key={i}
+                                            variant={i === currentPage ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(i)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    );
+                                }
+
+                                if (end < pageCount - 1) {
+                                    if (end < pageCount - 2) {
+                                        pages.push(<span key="end-ellipsis" className="px-2">...</span>);
+                                    }
+                                    pages.push(
+                                        <Button
+                                            key={pageCount - 1}
+                                            variant={currentPage === pageCount - 1 ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(pageCount - 1)}
+                                        >
+                                            {pageCount}
+                                        </Button>
+                                    );
+                                }
+
+                                return pages;
+                            })()}
+
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            >
                                 Next
                             </Button>
                         </div>

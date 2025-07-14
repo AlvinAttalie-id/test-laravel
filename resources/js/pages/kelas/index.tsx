@@ -87,49 +87,52 @@ export const columns: ColumnDef<Kelas>[] = [
         id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const kelases = row.original; 
+            const kelases = row.original;
             const [loading, setLoading] = useState(false);
             const [open, setOpen] = useState(false);
-            const form = useForm({}); 
+            const form = useForm({});
 
             const onConfirm = () => {
                 form.delete(route('kelas.destroy', kelases.id), {
-                    onSuccess: () => {
-                        setOpen(false);
-                        
-                    },
-                    onError: (errors) => {
-                        console.error(errors);
-                        // toast.error('Failed to delete user.');
-                    },
+                    onSuccess: () => setOpen(false),
+                    onError: (errors) => console.error(errors),
                 });
             };
+
             return (
-                <>
-                <AlertModal isOpen={open} onClose={() => setOpen(false)} onConfirm={onConfirm} loading={loading} />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
+                <div className="flex items-center justify-between gap-2">
+                    {/* Tombol Lihat Siswa */}
+                    <Link href={route('kelas.siswa', kelases.id)}>
+                        <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-800">
+                            Lihat Siswa
                         </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={route('kelas.edit', kelases.id)}>
-                                <span className="ml-4">Edit</span>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Button onClick={() => setOpen(true)} variant="ghost">
-                                Hapus
+                    </Link>
+
+                    {/* Dropdown Edit & Hapus */}
+                    <AlertModal isOpen={open} onClose={() => setOpen(false)} onConfirm={onConfirm} loading={loading} />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal />
                             </Button>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-                </>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <Link href={route('kelas.edit', kelases.id)} className="ml-2">
+                                    Edit
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Button onClick={() => setOpen(true)} variant="ghost" className="ml-2">
+                                    Hapus
+                                </Button>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             );
         },
     },
@@ -160,23 +163,32 @@ export default function GuruPage() {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
 
     const table = useReactTable({
         data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        onPaginationChange: setPagination,
+
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
+
         state: {
             sorting,
             columnFilters,
             columnVisibility,
             rowSelection,
+            pagination, // ✅ tambahkan ini
         },
     });
 
@@ -267,10 +279,78 @@ export default function GuruPage() {
                             {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
                         </div>
                         <div className="space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => table.previousPage()}
+                                disabled={!table.getCanPreviousPage()}
+                            >
                                 Previous
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+
+                            {/* Tombol halaman windowed */}
+                            {(() => {
+                                const pageCount = table.getPageCount();
+                                const currentPage = table.getState().pagination.pageIndex;
+                                const pages = [];
+
+                                const start = Math.max(0, currentPage - 2);
+                                const end = Math.min(pageCount - 1, currentPage + 2);
+
+                                if (start > 0) {
+                                    pages.push(
+                                        <Button
+                                            key={0}
+                                            variant={currentPage === 0 ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(0)}
+                                        >
+                                            1
+                                        </Button>
+                                    );
+                                    if (start > 1) {
+                                        pages.push(<span key="start-ellipsis" className="px-2">...</span>);
+                                    }
+                                }
+
+                                for (let i = start; i <= end; i++) {
+                                    pages.push(
+                                        <Button
+                                            key={i}
+                                            variant={i === currentPage ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(i)}
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    );
+                                }
+
+                                if (end < pageCount - 1) {
+                                    if (end < pageCount - 2) {
+                                        pages.push(<span key="end-ellipsis" className="px-2">...</span>);
+                                    }
+                                    pages.push(
+                                        <Button
+                                            key={pageCount - 1}
+                                            variant={currentPage === pageCount - 1 ? 'default' : 'outline'}
+                                            size="sm"
+                                            onClick={() => table.setPageIndex(pageCount - 1)}
+                                        >
+                                            {pageCount}
+                                        </Button>
+                                    );
+                                }
+
+                                return pages;
+                            })()}
+
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => table.nextPage()}
+                                disabled={!table.getCanNextPage()}
+                            >
                                 Next
                             </Button>
                         </div>

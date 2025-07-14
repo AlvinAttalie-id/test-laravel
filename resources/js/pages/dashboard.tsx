@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard({ totalGuru, totalSiswa, totalKelas }: { totalGuru: number, totalSiswa: number, totalKelas: number }) {
+export default function Dashboard({ totalGuru, totalSiswa, totalKelas }: { totalGuru: number, totalSiswa: number, totalKelas: number, totalMapel: number }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />

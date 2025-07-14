@@ -17,6 +17,16 @@ class GuruController extends Controller
         ]);
     }
 
+    public function kelas(Guru $guru)
+    {
+        $kelasList = $guru->kelas()->withCount('wali_kelas')->get();
+
+        return Inertia::render('guru/kelas-guru', [
+            'guru' => $guru,
+            'kelasList' => $kelasList,
+        ]);
+    }
+
     public function create()
     {
         return Inertia::render('guru/tambah');

@@ -85,9 +85,9 @@ export default function TambahKelas() {
                                     onChange={(e) => setData('kelas_id', e.target.value)}
                                     className="border-input ring-offset-background focus:ring-ring mt-4 w-full rounded-md border bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
                                 >
-                                    <option value="">Pilih Kelas</option>
+                                    <option className='text-black' value="">Pilih Kelas</option>
                                     {kelas.map((item) => (
-                                        <option key={item.id} value={item.id}>
+                                        <option key={item.id} value={item.id} className="text-black">
                                             {item.nama}
                                         </option>
                                     ))}
@@ -104,7 +104,7 @@ export default function TambahKelas() {
                                     id="tanggal_lahir"
                                     value={data.tanggal_lahir}
                                     onChange={(e) => setData('tanggal_lahir', e.target.value)}
-                                    className="mt-4 w-full"
+                                    className="mt-4 w-full text-white"
                                 />
                                 {errors.tanggal_lahir && <div className="text-sm text-red-500">{errors.tanggal_lahir}</div>}
                             </div>

@@ -157,15 +157,21 @@
     }
 }
 
+/* Untuk Chrome, Edge */
+input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* membalik warna icon agar putih jadi hitam */
+    cursor: pointer;
+}
+
 /*
   ---break---
 */
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
 }

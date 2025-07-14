@@ -18,6 +18,18 @@ class KelasController extends Controller
         ]);
     }
 
+    public function siswa(Kelas $kelas)
+    {
+        $kelas->load('wali_kelas'); // pastikan wali_kelas ikut dikirim
+
+        $siswas = $kelas->siswas()->get();
+
+        return Inertia::render('kelas/siswa-kelas', [
+            'kelas' => $kelas,
+            'siswas' => $siswas,
+        ]);
+    }
+
     public function create()
     {
         $wali = Guru::get();

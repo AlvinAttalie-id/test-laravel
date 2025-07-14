@@ -39,9 +39,24 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
-export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
-> = T & {
+export type Siswa = {
+    id: number;
+    nis: string;
+    nama: string;
+    alamat: string;
+    tanggal_lahir: string;
+};
+
+export type Kelas = {
+    id: number;
+    nama: string;
+    wali_kelas: {
+        id: number;
+        nama: string;
+    };
+};
+
+export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
     };
