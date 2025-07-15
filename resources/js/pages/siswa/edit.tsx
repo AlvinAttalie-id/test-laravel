@@ -36,8 +36,8 @@ export default function TambahKelas() {
     const { data, setData, post, processing, errors, reset } = useForm({
         nis: siswa.nis,
         nama: siswa.nama,
-        kelas_id: '',
-        tanggal_lahir: '',
+        kelas_id: siswa.kelas_id.toString(),
+        tanggal_lahir: siswa.tanggal_lahir,
         alamat: siswa.alamat,
     });
 
