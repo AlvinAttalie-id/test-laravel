@@ -104,7 +104,7 @@ export const columns: ColumnDef<Kelas>[] = [
                     {/* Tombol Lihat Siswa */}
                     <Link href={route('kelas.siswa', kelases.id)}>
                         <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-800">
-                            Lihat Siswa
+                            Lihat Detail
                         </Button>
                     </Link>
 
@@ -188,7 +188,7 @@ export default function GuruPage() {
             columnFilters,
             columnVisibility,
             rowSelection,
-            pagination, // ✅ tambahkan ini
+            pagination,
         },
     });
 

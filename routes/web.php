@@ -31,17 +31,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [GuruController::class, 'edit'])->name('guru.edit');
         Route::post('/update/{id}', [GuruController::class, 'update'])->name('guru.update');
         Route::delete('/delete/{id}', [GuruController::class, 'destroy'])->name('guru.destroy');
+        Route::get('/{guru}', [GuruController::class, 'kelas'])->name('guru.kelas');
     });
 
     Route::prefix('kelas')->group(function () {
         Route::get('/', [KelasController::class, 'index'])->name('kelas.index');
         Route::get('/create', [KelasController::class, 'create'])->name('kelas.create');
         Route::post('', [KelasController::class, 'store'])->name('kelas.store');
-        Route::get('/{kelas}/siswa', [KelasController::class, 'siswa'])->name('kelas.siswa');
-        Route::get('/{guru}/kelas', [GuruController::class, 'kelas'])->name('guru.kelas');
         Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
         Route::post('/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
         Route::delete('/delete/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+        Route::get('/{kelas}/siswa', [KelasController::class, 'siswa'])->name('kelas.siswa');
     });
 
     Route::prefix('siswa')->group(function () {

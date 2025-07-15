@@ -134,8 +134,8 @@ export const columns: ColumnDef<Guru>[] = [
 
             return (
                 <div className="flex items-center justify-between gap-2">
-                    {/* Tombol Lihat Siswa */}
-                    <Link href={route('kelas.siswa', kelases.id)}>
+                    {/* Tombol Lihat Detail */}
+                    <Link href={route('guru.kelas', kelases.id)}>
                         <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-800">
                             Lihat Siswa
                         </Button>

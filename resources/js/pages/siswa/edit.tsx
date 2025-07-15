@@ -96,9 +96,9 @@ export default function TambahKelas() {
                                     onChange={(e) => setData('kelas_id', e.target.value)}
                                     className="border-input ring-offset-background focus:ring-ring mt-4 w-full rounded-md border bg-transparent px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
                                 >
-                                    <option value="">Pilih Kelas</option>
+                                    <option className='text-black' value="">Pilih Kelas</option>
                                     {kelas.map((item) => (
-                                        <option key={item.id} value={item.id}>
+                                        <option className='text-black' key={item.id} value={item.id}>
                                             {item.nama}
                                         </option>
                                     ))}
