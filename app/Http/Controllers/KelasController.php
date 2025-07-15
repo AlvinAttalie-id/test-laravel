@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -22,7 +23,7 @@ class KelasController extends Controller
     {
         $kelas->load('wali_kelas'); // pastikan wali_kelas ikut dikirim
 
-        $siswas = $kelas->siswas()->get();
+        $siswas = Siswa::with('kelas')->where('kelas_id', $kelas->id)->get();
 
         return Inertia::render('kelas/siswa-kelas', [
             'kelas' => $kelas,

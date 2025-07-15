@@ -137,7 +137,7 @@ export const columns: ColumnDef<Guru>[] = [
                     {/* Tombol Lihat Detail */}
                     <Link href={route('guru.kelas', kelases.id)}>
                         <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-800">
-                            Lihat Siswa
+                            Lihat Detail
                         </Button>
                     </Link>
 

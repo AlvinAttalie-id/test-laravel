@@ -32,6 +32,9 @@ interface Siswa {
     nis: string;
     alamat: string;
     tanggal_lahir: string;
+    kelas?: {
+        nama: string;
+    };
 }
 
 interface Kelas {
@@ -83,6 +86,12 @@ const columns: ColumnDef<Siswa>[] = [
         header: 'Tanggal Lahir',
         cell: ({ row }) => <div>{row.getValue('tanggal_lahir')}</div>,
     },
+    {
+        accessorKey: 'kelas.nama',
+        header: 'Kelas',
+        cell: ({ row }) => <div>{row.original.kelas?.nama ?? '-'}</div>,
+    },
+
 ];
 
 export default function SiswaKelasPage() {
